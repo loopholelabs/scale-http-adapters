@@ -26,6 +26,11 @@ import (
 // FromResponse serializes the *ResponseWriter object into a runtime.Context
 func FromResponse(ctx *signature.Context, w *ResponseWriter) {
 	ctx.Generated().Response.StatusCode = int32(w.statusCode)
+
+	if ctx.Generated().Response.Headers == nil {
+		ctx.Generated().Response.Headers = signature.NewHttpResponseHeadersMap(uint32(len(w.headers)))
+	}
+
 	for k, v := range w.headers {
 		ctx.Generated().Response.Headers[k] = &signature.HttpStringList{
 			Value: v,
@@ -39,7 +44,15 @@ func ToResponse(ctx *signature.Context, w http.ResponseWriter) error {
 	for k, v := range ctx.Generated().Response.Headers {
 		w.Header().Set(k, strings.Join(v.Value, ","))
 	}
-	w.WriteHeader(int(ctx.Generated().Response.StatusCode))
+
+	if ctx.Generated().Response.StatusCode == 0 {
+		w.WriteHeader(http.StatusOK)
+	} else if ctx.Generated().Response.StatusCode < 100 || ctx.Generated().Response.StatusCode > 599 {
+		return fmt.Errorf("invalid status code: %d", ctx.Generated().Response.StatusCode)
+	} else {
+		w.WriteHeader(int(ctx.Generated().Response.StatusCode))
+	}
+
 	if ctx.Generated().Response.Body != nil {
 		_, err := w.Write(ctx.Generated().Response.Body)
 		if err != nil {

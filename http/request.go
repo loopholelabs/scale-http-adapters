@@ -29,6 +29,9 @@ const (
 
 // FromRequest serializes http.Request object into a runtime.Context
 func FromRequest(ctx *signature.Context, req *http.Request) error {
+	if ctx.Generated().Request.Headers == nil {
+		ctx.Generated().Request.Headers = signature.NewHttpResponseHeadersMap(uint32(len(req.Header)))
+	}
 	for k, v := range req.Header {
 		ctx.Generated().Request.Headers[k] = &signature.HttpStringList{
 			Value: v,

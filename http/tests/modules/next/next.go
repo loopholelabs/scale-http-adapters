@@ -16,12 +16,12 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-package scale
+package next
 
 import (
 	signature "github.com/loopholelabs/scale-signature-http"
 )
 
 func Scale(ctx *signature.Context) (*signature.Context, error) {
-	return ctx, nil
+	return ctx.Next()
 }

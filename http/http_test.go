@@ -18,14 +18,17 @@ package http
 
 import (
 	"context"
-	"errors"
 	signature "github.com/loopholelabs/scale-signature-http"
 	runtime "github.com/loopholelabs/scale/go"
 	"github.com/loopholelabs/scale/go/tests/harness"
 	"github.com/loopholelabs/scalefile/scalefunc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"io"
+	"net/http"
+	"net/http/httptest"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -35,141 +38,46 @@ type TestCase struct {
 	Run    func(*scalefunc.ScaleFunc, *testing.T)
 }
 
-func TestSignature(t *testing.T) {
-	passthroughModule := &harness.Module{
-		Name:      "passthrough",
-		Path:      "modules/passthrough/passthrough.go",
-		Signature: "github.com/loopholelabs/scale-signature-http",
-	}
-
+func TestHTTP(t *testing.T) {
 	nextModule := &harness.Module{
 		Name:      "next",
-		Path:      "modules/next/next.go",
+		Path:      "tests/modules/next/next.go",
 		Signature: "github.com/loopholelabs/scale-signature-http",
 	}
 
-	fileModule := &harness.Module{
-		Name:      "file",
-		Path:      "modules/file/file.go",
-		Signature: "github.com/loopholelabs/scale-signature-http",
-	}
+	modules := []*harness.Module{nextModule}
 
-	networkModule := &harness.Module{
-		Name:      "network",
-		Path:      "modules/network/network.go",
-		Signature: "github.com/loopholelabs/scale-signature-http",
-	}
-
-	panicModule := &harness.Module{
-		Name:      "panic",
-		Path:      "modules/panic/panic.go",
-		Signature: "github.com/loopholelabs/scale-signature-http",
-	}
-
-	modules := []*harness.Module{passthroughModule, nextModule, fileModule, networkModule, panicModule}
-
-	generatedModules := harness.Setup(t, modules, "github.com/loopholelabs/scale-http-adapters/http/modules")
+	generatedModules := harness.Setup(t, modules, "github.com/loopholelabs/scale-http-adapters/http/tests/modules")
 
 	var testCases = []TestCase{
 		{
 			Name:   "Passthrough",
-			Module: passthroughModule,
-			Run: func(scaleFunc *scalefunc.ScaleFunc, t *testing.T) {
-				r, err := runtime.New(context.Background(), signature.New(), []*scalefunc.ScaleFunc{scaleFunc})
-				require.NoError(t, err)
-
-				i, err := r.Instance(nil)
-				require.NoError(t, err)
-
-				i.Context().Response().SetBody("Test Data")
-
-				err = i.Run(context.Background())
-				assert.NoError(t, err)
-
-				assert.Equal(t, []byte("Test Data"), i.Context().Response().Body())
-			},
-		},
-		{
-			Name:   "Next",
 			Module: nextModule,
 			Run: func(scaleFunc *scalefunc.ScaleFunc, t *testing.T) {
-				next := func(ctx *signature.Context) (*signature.Context, error) {
-					ctx.Response().SetBody("Hello, World!")
-					return ctx, nil
-				}
-
 				r, err := runtime.New(context.Background(), signature.New(), []*scalefunc.ScaleFunc{scaleFunc})
 				require.NoError(t, err)
 
-				i, err := r.Instance(next)
-				require.NoError(t, err)
+				adapter := New(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+					require.Equal(t, "GET", req.Method)
+					body, err := io.ReadAll(req.Body)
+					require.NoError(t, err)
+					assert.Equal(t, "Test Data", string(body))
+					_, err = w.Write([]byte("Hello World"))
+					require.NoError(t, err)
+				}), r)
 
-				i.Context().Response().SetBody("Test Data")
+				server := httptest.NewServer(adapter)
+				defer server.Close()
 
-				err = i.Run(context.Background())
+				req, err := http.NewRequest("GET", server.URL, strings.NewReader("Test Data"))
 				assert.NoError(t, err)
 
-				assert.Equal(t, []byte("Hello, World!"), i.Context().Response().Body())
-			},
-		},
-		{
-			Name:   "NextError",
-			Module: nextModule,
-			Run: func(scaleFunc *scalefunc.ScaleFunc, t *testing.T) {
-				next := func(ctx *signature.Context) (*signature.Context, error) {
-					return nil, errors.New("next error")
-				}
+				res, err := http.DefaultClient.Do(req)
+				assert.NoError(t, err)
 
-				r, err := runtime.New(context.Background(), signature.New(), []*scalefunc.ScaleFunc{scaleFunc})
-				require.NoError(t, err)
-
-				i, err := r.Instance(next)
-				require.NoError(t, err)
-
-				err = i.Run(context.Background())
-				require.ErrorIs(t, err, errors.New("next error"))
-			},
-		},
-		{
-			Name:   "File",
-			Module: fileModule,
-			Run: func(scaleFunc *scalefunc.ScaleFunc, t *testing.T) {
-				r, err := runtime.New(context.Background(), signature.New(), []*scalefunc.ScaleFunc{scaleFunc})
-				require.NoError(t, err)
-
-				i, err := r.Instance(nil)
-				require.NoError(t, err)
-
-				err = i.Run(context.Background())
-				require.Error(t, err)
-			},
-		},
-		{
-			Name:   "Network",
-			Module: networkModule,
-			Run: func(scaleFunc *scalefunc.ScaleFunc, t *testing.T) {
-				r, err := runtime.New(context.Background(), signature.New(), []*scalefunc.ScaleFunc{scaleFunc})
-				require.NoError(t, err)
-
-				i, err := r.Instance(nil)
-				require.NoError(t, err)
-
-				err = i.Run(context.Background())
-				require.Error(t, err)
-			},
-		},
-		{
-			Name:   "Panic",
-			Module: panicModule,
-			Run: func(scaleFunc *scalefunc.ScaleFunc, t *testing.T) {
-				r, err := runtime.New(context.Background(), signature.New(), []*scalefunc.ScaleFunc{scaleFunc})
-				require.NoError(t, err)
-
-				i, err := r.Instance(nil)
-				require.NoError(t, err)
-
-				err = i.Run(context.Background())
-				require.Error(t, err)
+				body, err := io.ReadAll(res.Body)
+				assert.NoError(t, err)
+				assert.Equal(t, "Hello World", string(body))
 			},
 		},
 	}
@@ -183,7 +91,7 @@ func TestSignature(t *testing.T) {
 			scaleFunc := &scalefunc.ScaleFunc{
 				Version:   "TestVersion",
 				Name:      "TestName",
-				Signature: "http@v0.1.0",
+				Signature: "http@v0.1.1",
 				Language:  "go",
 				Function:  module,
 			}
