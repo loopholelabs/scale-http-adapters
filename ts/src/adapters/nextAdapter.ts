@@ -14,12 +14,9 @@
 	limitations under the License.
 */
 
-import { HttpContext } from "../http-signature/HttpContext";
+import { HttpContext, Context, Request, Response, StringList } from "@loopholelabs/scale-signature-http";
 
-import { Runtime } from "../runtime/runtime";
-import {
-  Context, Request, Response, StringList
-} from "../http-signature/generated/generated";
+import { Runtime } from "@loopholelabs/scale-ts";
 
 import { NextRequest, NextResponse } from 'next/server';
 

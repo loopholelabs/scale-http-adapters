@@ -22,8 +22,8 @@ import * as fs from "fs";
 import { WASI } from "wasi";
 
 import { ScaleFunc, V1Alpha, Go } from "@loopholelabs/scalefile";
-import { HttpContext, HttpContextFactory } from "../http-signature/HttpContext";
-import { Runtime as SigRuntime, WasiContext } from "../runtime/runtime";
+import { HttpContext, HttpContextFactory } from "@loopholelabs/scale-signature-http";
+import { Runtime as SigRuntime, WasiContext } from "@loopholelabs/scale-ts";
 
 
 window.TextEncoder = TextEncoder;

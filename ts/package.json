@@ -1,7 +1,7 @@
 {
-  "name": "@loopholelabs/scale-ts",
+  "name": "@loopholelabs/scale-http-adapters",
   "version": "0.1.0",
-  "description": "TypeScript version of the scale functions.",
+  "description": "TypeScript version of the http adapters and web UI.",
   "source": "src/web/index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "default": "dist/browser.html",
@@ -25,6 +25,8 @@
   "dependencies": {
     "@loopholelabs/polyglot-ts": "^0.3.0",
     "@loopholelabs/scale-signature": "^0.1.2",
+    "@loopholelabs/scale-signature-http": "^0.1.2-pre.0",
+    "@loopholelabs/scale-ts": "^0.1.2",
     "@loopholelabs/scalefile": "^0.1.1",
     "@swc/helpers": "^0.4.12",
     "@types/jest": "^29.2.0",

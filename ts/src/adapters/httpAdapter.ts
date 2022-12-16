@@ -14,12 +14,10 @@
 	limitations under the License.
 */
 import http from "http";
-import { HttpContext } from "../http-signature/HttpContext";
 
-import { Runtime } from "../runtime/runtime";
-import {
-  Context, Request, Response, StringList
-} from "../http-signature/generated/generated";
+import { HttpContext, Context, Request, Response, StringList } from "@loopholelabs/scale-signature-http";
+
+import { Runtime } from "@loopholelabs/scale-ts";
 
 export class HttpAdapter {
   private _runtime: Runtime<HttpContext>;

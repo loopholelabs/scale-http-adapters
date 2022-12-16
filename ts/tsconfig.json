@@ -1,5 +1,7 @@
 {
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts"
+  ],
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
@@ -9,8 +11,13 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "paths": {
-      "scale-js": ["."]
+      "scale-js": [
+        "."
+      ]
     },
-    "types": ["node", "jest"]
+    "types": [
+      "node",
+      "jest"
+    ]
   }
 }

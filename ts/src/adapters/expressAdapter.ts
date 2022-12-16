@@ -14,12 +14,9 @@
 	limitations under the License.
 */
 import express from "express";
-import { HttpContext } from "../http-signature/HttpContext";
+import { HttpContext, Context, Request, Response, StringList } from "@loopholelabs/scale-signature-http";
 
-import { Runtime } from "../runtime/runtime";
-import {
-  Context, Request, Response, StringList
-} from "../http-signature/generated/generated";
+import { Runtime } from "@loopholelabs/scale-ts";
 
 export class ExpressAdapter {
   private _runtime: Runtime<HttpContext>;
