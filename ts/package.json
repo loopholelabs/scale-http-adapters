@@ -1,6 +1,6 @@
 {
   "name": "@loopholelabs/scale-http-adapters",
-  "version": "0.1.0",
+  "version": "0.1.0-pre.0",
   "description": "TypeScript version of the http adapters and web UI.",
   "source": "src/web/index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
