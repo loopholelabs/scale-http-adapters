@@ -18,7 +18,7 @@
 //import * as fs from 'fs';
 import { HttpContext, HttpContextFactory, Context, Request, Response, StringList } from "@loopholelabs/scale-signature-http";
 
-import { Runtime, WasiContext } from '@loopholelabs/scale-ts';
+import { GetRuntime } from '@loopholelabs/scale-ts';
 import { ScaleFunc, V1Alpha, Go } from "@loopholelabs/scalefile";
 
 const addHeaderButton = (document.getElementById('cheadersadd') as HTMLInputElement);
@@ -246,38 +246,6 @@ var barebonesWASI = function() {
 }
 
 
-function getNewWasi() {
-
-  const w: WasiContext = {
-    getImportObject: () =>{  /* Minimal import object */
-      return barebonesWASI();
-      /*{
-        fd_write: () => {},
-        args_sizes_get: () => 0,
-        args_get: () => {},
-        clock_time_get: () => {},
-        environ_get: () => 0,
-        environ_sizes_get: () => 0,
-        fd_close: () => 0,
-        fd_fdstat_get: () => 0,
-        fd_seek: () => 0,
-        proc_exit: () => 0,
-      };*/
-    },
-    start: (instance: WebAssembly.Instance) => {
-      console.log("EXPORTS", instance.exports);
-
-      const startFn = (instance.exports._start as Function | undefined);
-      if (startFn) {
-        console.log("Call _start on wasm module...");
-        startFn();
-      }
-    }
-  }
-  return w;
-
-}
-
 const runButton = (document.getElementById('crun') as HTMLInputElement);
 
 let modules: ScaleFunc[] = [];
@@ -371,31 +339,23 @@ runButton.onclick = async function() {
         headers.set(k, new StringList(vals));
     }
     let req1 = new Request(method, BigInt(bodyData.length), protocol, ip, bodyData, headers);
-    
-    let respBody = enc.encode("Response body");
-    let respHeaders = new Map<string, StringList>();        
-    const resp1 = new Response(200, respBody, respHeaders);        
-    const context = new Context(req1, resp1);
 
     const signatureFactory = HttpContextFactory;
 
-    const r = new Runtime<HttpContext>(getNewWasi, signatureFactory, modules);
-    await r.Ready;
+    const r = await GetRuntime(signatureFactory, modules);
 
     const i = await r.Instance(null);
-    i.Context().ctx = context;
+    i.Context().Generated().Request = req1;
 
     let ctime = (new Date()).getTime();
     i.Run();
     let etime = (new Date()).getTime();
 
-    const retContext = i.Context().ctx;
+    const resp = i.Context().Response();
 
-    if (retContext!=null) {
+    if (resp!=null) {
 
-      (document.getElementById('status') as HTMLInputElement).innerHTML = "Executed in " + (etime - ctime).toFixed(3) + "ms"
-
-      let resp = retContext.Response;
+      (document.getElementById('status') as HTMLInputElement).innerHTML = "Executed in " + (etime - ctime).toFixed(3) + "ms";
 
       (document.getElementById('rstatus') as HTMLElement).innerHTML = "" + resp.StatusCode;
       let dec = new TextDecoder();
