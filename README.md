@@ -13,6 +13,11 @@ adapters are used to integrate Scale Functions with the following HTTP servers (
 
 **This library requires Go1.18 or later.**
 
+- [TypeScript](https://www.typescriptlang.org)
+  - express
+  - http
+  - [next](https://vercel.com/docs/concepts/functions/edge-functions#creating-edge-functions)
+
 ## Important note about releases and stability
 
 This repository generally follows [Semantic Versioning](https://semver.org/). However, **this library is currently in
