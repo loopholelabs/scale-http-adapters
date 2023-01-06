@@ -37,9 +37,10 @@ export class ExpressAdapter {
     const c = ExpressAdapter.toContext(req, res);
 
     const i = await this._runtime.Instance(null);
-    i.Context().ctx = c;
+    i.Context().Generated().Request = c.Request;
+    i.Context().Response().StatusCode = 200;  // Default status code
     i.Run();
-    const newc = i.Context().ctx;
+    const newc = new Context(c.Request, i.Context().Response());
 
     if (newc != null) {
       // Now write it back out...

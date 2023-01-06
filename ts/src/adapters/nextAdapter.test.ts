@@ -33,7 +33,6 @@ window.TextEncoder = TextEncoder;
 window.TextDecoder = TextDecoder as typeof window["TextDecoder"];
 
 import * as fs from "fs";
-import { WASI } from "wasi";
 
 import { NextAdapter } from "./nextAdapter";
 
@@ -41,24 +40,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { HttpContext, HttpContextFactory, Context as PgContext, Request as PgRequest, Response as PgResponse, StringList as PgStringList } from "@loopholelabs/scale-signature-http";
 
-import { Runtime as SigRuntime, WasiContext } from "@loopholelabs/scale-ts";
+import { GetRuntime } from "@loopholelabs/scale-ts";
 
 import { ScaleFunc, V1Alpha, Go } from "@loopholelabs/scalefile";
-
-
-function getNewWasi(): WasiContext {
-  const wasi = new WASI({
-    args: [],
-    env: {},
-  });
-  const w: WasiContext = {
-    getImportObject: () => wasi.wasiImport,
-    start: (instance: WebAssembly.Instance) => {
-      wasi.start(instance);
-    }
-  }
-  return w;
-}
 
 describe("nextAdapter", () => {
 
@@ -116,8 +100,7 @@ describe("nextAdapter", () => {
 
     const signatureFactory = HttpContextFactory;
 
-    const r = new SigRuntime<HttpContext>(getNewWasi, signatureFactory, [scalefnMiddle, scalefnEndpoint]);
-    await r.Ready;
+    const r = await GetRuntime(signatureFactory, [scalefnMiddle, scalefnEndpoint]);
 
     const adapter = new NextAdapter(r);
 

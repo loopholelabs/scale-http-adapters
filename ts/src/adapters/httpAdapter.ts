@@ -56,10 +56,11 @@ export class HttpAdapter {
       const c = HttpAdapter.toContext(req, body, res);
 
       const i = await this._runtime.Instance(null);
-      i.Context().ctx = c;
+      i.Context().Generated().Request = c.Request;
+      i.Context().Response().StatusCode = 200;  // Default status code
       i.Run();
-      const newc = i.Context().ctx;
-  
+      const newc = new Context(c.Request, i.Context().Response());
+    
       if (newc != null) {
         HttpAdapter.fromContext(newc, res);        
       } else {

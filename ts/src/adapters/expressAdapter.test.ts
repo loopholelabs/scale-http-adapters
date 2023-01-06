@@ -19,30 +19,15 @@ import express from "express";
 import bodyParser from "body-parser";
 import * as fs from "fs";
 import request from "supertest";
-import { WASI } from "wasi";
 
 import { ScaleFunc, V1Alpha, Go } from "@loopholelabs/scalefile";
-import { HttpContext, HttpContextFactory } from "@loopholelabs/scale-signature-http";
-import { Runtime as SigRuntime, WasiContext } from "@loopholelabs/scale-ts";
+import { HttpContextFactory } from "@loopholelabs/scale-signature-http";
+import { GetRuntime } from "@loopholelabs/scale-ts";
 
 import { ExpressAdapter } from "./expressAdapter";
 
 window.TextEncoder = TextEncoder;
 window.TextDecoder = TextDecoder as typeof window["TextDecoder"];
-
-function getNewWasi(): WasiContext {
-  const wasi = new WASI({
-    args: [],
-    env: {},
-  });
-  const w: WasiContext = {
-    getImportObject: () => wasi.wasiImport,
-    start: (instance: WebAssembly.Instance) => {
-      wasi.start(instance);
-    }
-  }
-  return w;
-}
 
 
 describe("expressAdapter", () => {
@@ -61,9 +46,7 @@ describe("expressAdapter", () => {
 
     const signatureFactory = HttpContextFactory;
 
-    const r = new SigRuntime<HttpContext>(getNewWasi, signatureFactory, [scalefnMiddle, scalefnEndpoint]);
-    await r.Ready;
-    
+    const r = await GetRuntime(signatureFactory, [scalefnMiddle, scalefnEndpoint]);
 
     const adapter = new ExpressAdapter(r);
 
