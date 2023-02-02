@@ -7,11 +7,24 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [v0.2.0] - 2023-02-01
+
+### Changes
+
+- Bumping Scale runtime version to `v0.2.1`
+- Bumping Scale HTTP Signature version to `v0.2.3`
+- Bumping Scalefile version to `v0.1.4`
+
+### Features
+
+- Adding NextJS Adapter
+
 ## [v0.1.0] - 2022-11-29
 
 ### Features
 
 - Initial release of the Scale HTTP Adapters library.
 
-[unreleased]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.2.0
 [v0.1.0]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.1.0

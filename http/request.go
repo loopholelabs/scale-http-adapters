@@ -29,27 +29,27 @@ const (
 
 // FromRequest serializes http.Request object into a runtime.Context
 func FromRequest(ctx *signature.Context, req *http.Request) error {
-	if ctx.Generated().Request.Headers == nil {
-		ctx.Generated().Request.Headers = signature.NewHttpResponseHeadersMap(uint32(len(req.Header)))
+	if ctx.Request.Headers == nil {
+		ctx.Request.Headers = signature.NewHttpResponseHeadersMap(uint32(len(req.Header)))
 	}
 	for k, v := range req.Header {
-		ctx.Generated().Request.Headers[k] = &signature.HttpStringList{
+		ctx.Request.Headers[k] = &signature.HttpStringList{
 			Value: v,
 		}
 	}
-	ctx.Generated().Request.Method = req.Method
-	ctx.Generated().Request.ContentLength = req.ContentLength
-	ctx.Generated().Request.Protocol = req.Proto
-	ctx.Generated().Request.IP = req.RemoteAddr
+	ctx.Request.Method = req.Method
+	ctx.Request.ContentLength = req.ContentLength
+	ctx.Request.Protocol = req.Proto
+	ctx.Request.IP = req.RemoteAddr
 
 	if req.ContentLength != 0 {
 		var err error
-		ctx.Generated().Request.Body, err = io.ReadAll(io.LimitReader(req.Body, BodyLimit))
+		ctx.Request.Body, err = io.ReadAll(io.LimitReader(req.Body, BodyLimit))
 		if err != nil {
 			return err
 		}
 	} else {
-		ctx.Generated().Request.Body = nil
+		ctx.Request.Body = nil
 	}
 
 	return nil
@@ -57,17 +57,17 @@ func FromRequest(ctx *signature.Context, req *http.Request) error {
 
 // ToRequest deserializes the runtime.Context object into an existing http.Request
 func ToRequest(ctx *signature.Context, req *http.Request) {
-	req.Method = ctx.Generated().Request.Method
-	req.ContentLength = ctx.Generated().Request.ContentLength
-	req.Proto = ctx.Generated().Request.Protocol
-	req.RemoteAddr = ctx.Generated().Request.IP
+	req.Method = ctx.Request.Method
+	req.ContentLength = ctx.Request.ContentLength
+	req.Proto = ctx.Request.Protocol
+	req.RemoteAddr = ctx.Request.IP
 
-	for k, v := range ctx.Generated().Request.Headers {
+	for k, v := range ctx.Request.Headers {
 		req.Header[k] = v.Value
 	}
 
-	if ctx.Generated().Request.ContentLength != 0 {
-		req.Body = io.NopCloser(bytes.NewReader(ctx.Generated().Request.Body))
+	if ctx.Request.ContentLength != 0 {
+		req.Body = io.NopCloser(bytes.NewReader(ctx.Request.Body))
 	} else {
 		req.Body = io.NopCloser(bytes.NewReader(nil))
 	}

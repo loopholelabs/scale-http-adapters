@@ -1,6 +1,6 @@
 {
   "include": [
-    "src/**/*.ts"
+    "**/*.ts"
   ],
   "compilerOptions": {
     "target": "es2020",
@@ -11,7 +11,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "paths": {
-      "scale-js": [
+      "scalefile": [
         "."
       ]
     },

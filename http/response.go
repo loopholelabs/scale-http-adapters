@@ -25,36 +25,36 @@ import (
 
 // FromResponse serializes the *ResponseWriter object into a runtime.Context
 func FromResponse(ctx *signature.Context, w *ResponseWriter) {
-	ctx.Generated().Response.StatusCode = int32(w.statusCode)
+	ctx.Response.StatusCode = int32(w.statusCode)
 
-	if ctx.Generated().Response.Headers == nil {
-		ctx.Generated().Response.Headers = signature.NewHttpResponseHeadersMap(uint32(len(w.headers)))
+	if ctx.Response.Headers == nil {
+		ctx.Response.Headers = signature.NewHttpResponseHeadersMap(uint32(len(w.headers)))
 	}
 
 	for k, v := range w.headers {
-		ctx.Generated().Response.Headers[k] = &signature.HttpStringList{
+		ctx.Response.Headers[k] = &signature.HttpStringList{
 			Value: v,
 		}
 	}
-	ctx.Generated().Response.Body = w.buffer.Bytes()
+	ctx.Response.Body = w.buffer.Bytes()
 }
 
 // ToResponse deserializes the runtime.Context object into the http.ResponseWriter
 func ToResponse(ctx *signature.Context, w http.ResponseWriter) error {
-	for k, v := range ctx.Generated().Response.Headers {
+	for k, v := range ctx.Response.Headers {
 		w.Header().Set(k, strings.Join(v.Value, ","))
 	}
 
-	if ctx.Generated().Response.StatusCode == 0 {
+	if ctx.Response.StatusCode == 0 {
 		w.WriteHeader(http.StatusOK)
-	} else if ctx.Generated().Response.StatusCode < 100 || ctx.Generated().Response.StatusCode > 599 {
-		return fmt.Errorf("invalid status code: %d", ctx.Generated().Response.StatusCode)
+	} else if ctx.Response.StatusCode < 100 || ctx.Response.StatusCode > 599 {
+		return fmt.Errorf("invalid status code: %d", ctx.Response.StatusCode)
 	} else {
-		w.WriteHeader(int(ctx.Generated().Response.StatusCode))
+		w.WriteHeader(int(ctx.Response.StatusCode))
 	}
 
-	if ctx.Generated().Response.Body != nil {
-		_, err := w.Write(ctx.Generated().Response.Body)
+	if ctx.Response.Body != nil {
+		_, err := w.Write(ctx.Response.Body)
 		if err != nil {
 			return fmt.Errorf("error writing response body: %w", err)
 		}

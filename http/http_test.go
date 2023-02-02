@@ -18,8 +18,7 @@ package http
 
 import (
 	"context"
-	signature "github.com/loopholelabs/scale-signature-http"
-	runtime "github.com/loopholelabs/scale/go"
+	scale "github.com/loopholelabs/scale/go"
 	"github.com/loopholelabs/scale/go/tests/harness"
 	"github.com/loopholelabs/scalefile/scalefunc"
 	"github.com/stretchr/testify/assert"
@@ -41,20 +40,20 @@ type TestCase struct {
 func TestHTTP(t *testing.T) {
 	nextModule := &harness.Module{
 		Name:      "next",
-		Path:      "tests/modules/next/next.go",
+		Path:      "../tests/modules/next/next.go",
 		Signature: "github.com/loopholelabs/scale-signature-http",
 	}
 
 	modules := []*harness.Module{nextModule}
 
-	generatedModules := harness.Setup(t, modules, "github.com/loopholelabs/scale-http-adapters/http/tests/modules")
+	generatedModules := harness.GoSetup(t, modules, "github.com/loopholelabs/scale-http-adapters/tests/modules")
 
 	var testCases = []TestCase{
 		{
-			Name:   "Passthrough",
+			Name:   "Next",
 			Module: nextModule,
 			Run: func(scaleFunc *scalefunc.ScaleFunc, t *testing.T) {
-				r, err := runtime.New(context.Background(), signature.New(), []*scalefunc.ScaleFunc{scaleFunc})
+				r, err := scale.New(context.Background(), []*scalefunc.ScaleFunc{scaleFunc})
 				require.NoError(t, err)
 
 				adapter := New(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
@@ -62,7 +61,7 @@ func TestHTTP(t *testing.T) {
 					body, err := io.ReadAll(req.Body)
 					require.NoError(t, err)
 					assert.Equal(t, "Test Data", string(body))
-					_, err = w.Write([]byte("Hello World"))
+					_, err = w.Write([]byte("-next"))
 					require.NoError(t, err)
 				}), r)
 
@@ -77,7 +76,7 @@ func TestHTTP(t *testing.T) {
 
 				body, err := io.ReadAll(res.Body)
 				assert.NoError(t, err)
-				assert.Equal(t, "Hello World", string(body))
+				assert.Equal(t, "-modified-next", string(body))
 			},
 		},
 	}
@@ -89,10 +88,11 @@ func TestHTTP(t *testing.T) {
 			require.NoError(t, err)
 
 			scaleFunc := &scalefunc.ScaleFunc{
-				Version:   "TestVersion",
+				Version:   scalefunc.V1Alpha,
 				Name:      "TestName",
-				Signature: "http@v0.1.1",
-				Language:  "go",
+				Tag:       "TestTag",
+				Signature: "http",
+				Language:  scalefunc.Go,
 				Function:  module,
 			}
 			testCase.Run(scaleFunc, t)

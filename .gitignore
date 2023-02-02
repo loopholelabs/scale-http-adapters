@@ -1,4 +1,7 @@
 .idea
-*.wasm
 *.bak
 .fleet
+node_modules
+.parcel-cache
+dist
+coverage
