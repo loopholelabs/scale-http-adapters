@@ -3,19 +3,16 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Tests](https://github.com/loopholelabs/scale-http-adapters/actions/workflows/test.yml/badge.svg)](https://github.com/loopholelabs/scale-http-adapters/actions/workflows/test.yml)
 
+**This library requires Go1.18 or later.**
+
 This library contains the definitions and source for the official Scale HTTP Adapters for [Scale Functions](https://scale.sh). These 
 adapters are used to integrate Scale Functions with the following HTTP servers (organized by language):
 
 - [Go](https://golang.org)
   - [net/http](https://pkg.go.dev/net/http)
   - [fasthttp](https://pkg.go.dev/github.com/valyala/fasthttp)
-  - [fiber](https://pkg.go.dev/github.com/gofiber/fiber/v2)
-
-**This library requires Go1.18 or later.**
 
 - [TypeScript](https://www.typescriptlang.org)
-  - express
-  - http
   - [next](https://vercel.com/docs/concepts/functions/edge-functions#creating-edge-functions)
 
 ## Important note about releases and stability
