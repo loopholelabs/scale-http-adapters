@@ -19,10 +19,30 @@ jobs:
           check-latest: true
           cache: true
 
+      - name: Install Node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+
       - name: Install Tinygo
         uses: acifani/setup-tinygo@v1
         with:
           tinygo-version: 0.26.0
 
-      - name: Test
+      - name: Cache the node_modules directories
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./ts/node_modules
+          key: npm
+      - name: Install dependencies with npm
+        run: npm install --legacy-peer-deps --include=dev
+        working-directory: ./ts
+
+      - name: Test Go Runtime
         run: go test -v ./...
+
+      - name: Test TS Runtime
+        run: npm run test
+        working-directory: ./ts
