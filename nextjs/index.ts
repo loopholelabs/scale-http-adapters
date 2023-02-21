@@ -15,7 +15,6 @@
 */
 
 import {Context, HttpStringList} from "@loopholelabs/scale-signature-http";
-
 import { Runtime } from "@loopholelabs/scale";
 
 import {NextRequest, NextResponse} from 'next/server';
