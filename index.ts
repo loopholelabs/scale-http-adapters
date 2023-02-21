@@ -14,4 +14,4 @@
 	limitations under the License.
 */
 
-export * from "./adapters/nextAdapter";
+export { NextJS } from "./nextjs";

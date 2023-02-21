@@ -14,15 +14,14 @@
 	limitations under the License.
 */
 
-import {Context, StringList} from "@loopholelabs/scale-signature-http";
-
-import {Runtime} from "@loopholelabs/scale-ts";
+import {Context, HttpStringList} from "@loopholelabs/scale-signature-http";
+import { Runtime } from "@loopholelabs/scale";
 
 import {NextRequest, NextResponse} from 'next/server';
 
 // https://vercel.com/docs/concepts/functions/edge-functions#creating-edge-functions
 
-export class NextAdapter {
+export class NextJS {
   private _runtime: Runtime<Context>;
   constructor(runtime: Runtime<Context>) {
     this._runtime = runtime;
@@ -31,9 +30,9 @@ export class NextAdapter {
   Handler() {
     return async (req: NextRequest) => {
       const i = await this._runtime.Instance(null);
-      await NextAdapter.fromRequest(i.Context(), req);
+      await NextJS.fromRequest(i.Context(), req);
       i.Run();
-      return NextAdapter.toResponse(i.Context());
+      return NextJS.toResponse(i.Context());
     };
   }
 
@@ -58,7 +57,7 @@ export class NextAdapter {
       if (vals !== null) {
         sl.push(vals);
       }
-      const v = new StringList(sl);
+      const v = new HttpStringList(sl);
       ctx.Request.Headers.set(k, v);
     }
 
