@@ -1,26 +1,23 @@
 # Scale HTTP Adapters
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Tests](https://github.com/loopholelabs/scale-http-adapters/actions/workflows/test.yml/badge.svg)](https://github.com/loopholelabs/scale-http-adapters/actions/workflows/test.yml)
+[![Discord](https://dcbadge.vercel.app/api/server/JYmFhtdPeu?style=flat)](https://loopholelabs.io/discord)
 
-**This library requires Go1.18 or later.**
+[![Golang](https://github.com/loopholelabs/scale-http-adapters/actions/workflows/golang-tests.yml/badge.svg)](https://github.com/loopholelabs/scale-http-adapters/actions/workflows/golang-tests.yml)
+[![Typescript](https://github.com/loopholelabs/scale-http-adapters/actions/workflows/typescript-tests.yml/badge.svg)](https://github.com/loopholelabs/scale-http-adapters/actions/workflows/typescript-tests.yml)
 
-This library contains the definitions and source for the official Scale HTTP Adapters for [Scale Functions](https://scale.sh). These 
-adapters are used to integrate Scale Functions with the following HTTP servers (organized by language):
+This library contains the definitions and libraries to adapt the Scale HTTP Signature for [Scale Functions](https://scale.sh) to popular 
+HTTP Libraries and Frameworks in [Golang](https://golang.org) and [Typescript](https://www.typescriptlang.org/).
 
-- [Go](https://golang.org)
-  - [net/http](https://pkg.go.dev/net/http)
-  - [fasthttp](https://pkg.go.dev/github.com/valyala/fasthttp)
+### Supported Frameworks:
+
+- [Golang](https://golang.org)
+  - [x] [net/http](https://pkg.go.dev/net/http)
+  - [x] [fasthttp](https://pkg.go.dev/github.com/valyala/fasthttp)
+
 
 - [TypeScript](https://www.typescriptlang.org)
-  - [next](https://vercel.com/docs/concepts/functions/edge-functions#creating-edge-functions)
-
-## Important note about releases and stability
-
-This repository generally follows [Semantic Versioning](https://semver.org/). However, **this library is currently in
-Beta** and is still considered experimental. Breaking changes of the library will _not_ trigger a new major release. The
-same is true for selected other new features explicitly marked as
-**EXPERIMENTAL** in [the changelog](/CHANGELOG.md).
+  - [x] [next](https://vercel.com/docs/concepts/functions/edge-functions#creating-edge-functions)
 
 ## Usage and Documentation
 

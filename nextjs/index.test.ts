@@ -34,11 +34,11 @@ window.TextDecoder = TextDecoder as typeof window["TextDecoder"];
 
 import * as fs from "fs";
 
-import { NextAdapter } from "./nextAdapter";
+import { NextJS } from "./index";
 import { NextRequest } from 'next/server';
-import { New } from "@loopholelabs/scale-ts";
+import { New } from "@loopholelabs/scale";
 import { ScaleFunc, V1Alpha, Go } from "@loopholelabs/scalefile";
-import * as httpSignature from "@loopholelabs/scale-signature-http";
+import * as signature from "@loopholelabs/scale-signature-http";
 
 describe("nextAdapter", () => {
 
@@ -46,8 +46,8 @@ describe("nextAdapter", () => {
     const bodyData = '{"foo": "bar"}';
     const request = new NextRequest('https://example.com', {method: 'POST', body: bodyData});
 
-    let ctx = httpSignature.New();
-    ctx = await NextAdapter.fromRequest(ctx, request);
+    let ctx = signature.New();
+    ctx = await NextJS.fromRequest(ctx, request);
 
     if (request.body != null ) {
       expect(ctx.Request.Method).toBe(request.method);
@@ -60,13 +60,13 @@ describe("nextAdapter", () => {
 
   it("Can convert Context to Response", async () => {
     const body = new TextEncoder().encode("Hello world");
-    const headers = new Map<string, httpSignature.StringList>;
-    headers.set("MIDDLEWARE", new httpSignature.StringList(["Hello"]));
-    const c = new httpSignature.Context();
+    const headers = new Map<string, signature.HttpStringList>;
+    headers.set("MIDDLEWARE", new signature.HttpStringList(["Hello"]));
+    const c = new signature.Context();
     c.Response.Body = body;
     c.Response.Headers = headers;
 
-    const response = NextAdapter.toResponse(c);
+    const response = NextJS.toResponse(c);
 
     let b = await (await response.blob()).arrayBuffer();
     const outbodybytes = new Uint8Array(b);
@@ -85,11 +85,13 @@ describe("nextAdapter", () => {
 
     const fn = new ScaleFunc(V1Alpha, "Test.Next", "Test.Tag", "ExampleName@ExampleVersion", Go, modNext);
     const r = await New([fn]);
-    const adapter = new NextAdapter(r);
+    const adapter = new NextJS(r);
     const handler = adapter.Handler();
 
     const bodyData = '{"foo": "bar"}';
-    const request = new NextRequest('https://example.com', {method: 'POST', body: bodyData});
+    const request = new NextRequest('https://example.com', {method: 'POST', body: bodyData, headers: {
+        "test-x": "test",
+      }});
     const res = await handler(request);
     let b = await (await res.blob()).arrayBuffer();
     const outbodybytes = new Uint8Array(b);
