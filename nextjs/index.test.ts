@@ -13,6 +13,16 @@
         See the License for the specific language governing permissions and
         limitations under the License.
 */
+
+import { Headers,  Request,  Response } from 'node-fetch';
+
+if (!global.fetch) {
+//  (global as any).fetch = fetch;
+  (global as any).Headers = Headers;
+  (global as any).Request = Request;
+  (global as any).Response = Response;
+}
+
 import { TextEncoder, TextDecoder } from "util";
 import * as fs from "fs";
 
