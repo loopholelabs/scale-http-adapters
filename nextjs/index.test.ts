@@ -14,11 +14,7 @@
         limitations under the License.
 */
 
-import {
-  Headers,
-  Request,
-  Response,
-} from 'node-fetch';
+import { Headers,  Request,  Response } from 'node-fetch';
 
 if (!global.fetch) {
 //  (global as any).fetch = fetch;
@@ -28,10 +24,6 @@ if (!global.fetch) {
 }
 
 import { TextEncoder, TextDecoder } from "util";
-
-window.TextEncoder = TextEncoder;
-window.TextDecoder = TextDecoder as typeof window["TextDecoder"];
-
 import * as fs from "fs";
 
 import { NextJS } from "./index";
