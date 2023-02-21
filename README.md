@@ -13,11 +13,11 @@ HTTP Libraries and Frameworks in [Golang](https://golang.org) and [Typescript](h
 
 - [Golang](https://golang.org)
   - [x] [net/http](https://pkg.go.dev/net/http)
-  - [x] [fasthttp](https://pkg.go.dev/github.com/valyala/fasthttp)
+  - [x] [FastHTTP](https://pkg.go.dev/github.com/valyala/fasthttp)
 
 
 - [TypeScript](https://www.typescriptlang.org)
-  - [x] [next](https://vercel.com/docs/concepts/functions/edge-functions#creating-edge-functions)
+  - [x] [NextJS](https://vercel.com/docs/concepts/functions/edge-functions#creating-edge-functions)
 
 ## Usage and Documentation
 
