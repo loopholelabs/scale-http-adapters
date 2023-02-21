@@ -14,7 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Bumping Scale version to `v0.3.6`
 - Bumping Scale HTTP Signature version to `v0.3.4`
 - Bumping Scalefile version to `v0.1.7`
-
+- Updating NextJS Adapter to work with new Scalefile format
 
 ## [v0.2.1] - 2023-02-01
 
