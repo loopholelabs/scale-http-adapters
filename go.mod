@@ -3,7 +3,7 @@ module github.com/loopholelabs/scale-http-adapters
 go 1.18
 
 require (
-	github.com/loopholelabs/scale v0.3.6
+	github.com/loopholelabs/scale v0.3.7
 	github.com/loopholelabs/scale-signature-http v0.3.4
 	github.com/loopholelabs/scalefile v0.1.7
 	github.com/stretchr/testify v1.8.1
