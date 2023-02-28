@@ -15,21 +15,19 @@
 */
 
 import {Context, HttpStringList} from "@loopholelabs/scale-signature-http";
-import { Runtime } from "@loopholelabs/scale";
-
 import {NextRequest, NextResponse} from 'next/server';
-
-// https://vercel.com/docs/concepts/functions/edge-functions#creating-edge-functions
+import { Runtime } from "@loopholelabs/scale";
+import {NextConfig} from "next";
 
 export class NextJS {
-  private _runtime: Runtime<Context>;
-  constructor(runtime: Runtime<Context>) {
+  private _runtime: Promise<Runtime<Context>>|Runtime<Context>;
+  constructor(runtime: (Promise<Runtime<Context>>|Runtime<Context>)) {
     this._runtime = runtime;
   }
 
   Handler() {
     return async (req: NextRequest) => {
-      const i = await this._runtime.Instance(null);
+      const i = await (await this._runtime).Instance(null);
       await NextJS.fromRequest(i.Context(), req);
       i.Run();
       return NextJS.toResponse(i.Context());
@@ -81,4 +79,23 @@ export class NextJS {
       headers: headers
     });
   }
+}
+
+export function WithScale(nextConfig: NextConfig = {}) {
+  const extension = /\.scale/
+  const loader = {
+    loader:'@loopholelabs/scale/webpack',
+  }
+  return Object.assign({}, nextConfig, {
+    webpack(config: any, options: any) {
+      config.module.rules.push({
+        test: extension,
+        use: [ loader],
+      })
+      if (typeof nextConfig.webpack === 'function') {
+        return nextConfig.webpack(config, options)
+      }
+      return config
+    },
+  })
 }

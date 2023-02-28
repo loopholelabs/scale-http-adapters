@@ -76,8 +76,7 @@ describe("nextAdapter", () => {
     const modNext = fs.readFileSync("tests/modules/next/next.wasm");
 
     const fn = new ScaleFunc(V1Alpha, "Test.Next", "Test.Tag", "ExampleName@ExampleVersion", Go, modNext);
-    const r = await New([fn]);
-    const adapter = new NextJS(r);
+    const adapter = new NextJS(New([fn]));
     const handler = adapter.Handler();
 
     const bodyData = '{"foo": "bar"}';

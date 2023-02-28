@@ -6,17 +6,14 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "sourceMap": true,
     "declaration": true,
     "paths": {
-      "scale-http-adapters": [
-        "."
-      ]
+      "scale-http-adapters": ["."]
     },
     "types": ["node", "jest"]
-  }
+  },
 }
