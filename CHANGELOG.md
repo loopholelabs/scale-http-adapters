@@ -7,6 +7,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [v0.3.6] - 2023-02-28
+
+### Features
+
+- Adding a `WithScale` helper to the `NextJS` adapter which enables the webpack loader to be used with `NextJS`
+
+### Dependencies
+
+- Bumping Scale version to `v0.3.12`
+
 ## [v0.3.5] - 2023-02-20
 
 ### Changes

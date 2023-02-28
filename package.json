@@ -1,7 +1,7 @@
 {
   "name": "@loopholelabs/scale-http-adapters",
-  "version": "0.3.5",
-  "description": "TypeScript version of the http adapters",
+  "version": "0.3.6",
+  "description": "The definitions and libraries to adapt the Scale HTTP Signature for Scale Functions to popular HTTP Libraries and Frameworks",
   "source": "index.ts",
   "types": "types.d.ts",
   "license": "apache-2.0",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@loopholelabs/polyglot-ts": "^0.4.0",
-    "@loopholelabs/scale": "^0.3.11",
+    "@loopholelabs/scale": "^0.3.12",
     "@loopholelabs/scale-signature": "^0.2.9",
     "@loopholelabs/scale-signature-http": "^0.3.4",
     "@loopholelabs/scalefile": "^0.1.7",
