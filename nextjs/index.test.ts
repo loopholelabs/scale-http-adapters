@@ -29,7 +29,7 @@ import * as fs from "fs";
 import { NextJS } from "./index";
 import { NextRequest } from 'next/server';
 import { New } from "@loopholelabs/scale";
-import { ScaleFunc, V1Alpha, Go } from "@loopholelabs/scalefile";
+import { ScaleFunc, V1Alpha, Go } from "@loopholelabs/scalefile/scalefunc";
 import * as signature from "@loopholelabs/scale-signature-http";
 
 describe("nextAdapter", () => {

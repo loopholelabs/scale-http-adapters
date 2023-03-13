@@ -32,7 +32,7 @@ func FromResponse(ctx *signature.Context, w *ResponseWriter) {
 	}
 
 	for k, v := range w.headers {
-		ctx.Response.Headers[k] = &signature.HttpStringList{
+		ctx.Response.Headers[strings.ToLower(k)] = &signature.HttpStringList{
 			Value: v,
 		}
 	}
@@ -42,7 +42,7 @@ func FromResponse(ctx *signature.Context, w *ResponseWriter) {
 // ToResponse deserializes the runtime.Context object into the http.ResponseWriter
 func ToResponse(ctx *signature.Context, w http.ResponseWriter) error {
 	for k, v := range ctx.Response.Headers {
-		w.Header().Set(k, strings.Join(v.Value, ","))
+		w.Header().Set(strings.ToLower(k), strings.Join(v.Value, ","))
 	}
 
 	if ctx.Response.StatusCode == 0 {
