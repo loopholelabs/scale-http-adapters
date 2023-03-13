@@ -34,7 +34,7 @@ func FromRequestContext(ctx *signature.Context, fastCTX *fasthttp.RequestCtx) {
 	}
 
 	fastCTX.Request.Header.VisitAll(func(key []byte, value []byte) {
-		ctx.Request.Headers[string(key)] = &signature.HttpStringList{
+		ctx.Request.Headers[strings.ToLower(string(key))] = &signature.HttpStringList{
 			Value: strings.Split(string(value), ","),
 		}
 	})
@@ -46,6 +46,6 @@ func ToRequestContext(ctx *signature.Context, fastCTX *fasthttp.RequestCtx) {
 	fastCTX.Request.SetBody(ctx.Request.Body)
 
 	for k, v := range ctx.Request.Headers {
-		fastCTX.Request.Header.Set(k, strings.Join(v.Value, ","))
+		fastCTX.Request.Header.Set(strings.ToLower(k), strings.Join(v.Value, ","))
 	}
 }

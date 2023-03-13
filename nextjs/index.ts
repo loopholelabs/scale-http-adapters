@@ -56,7 +56,7 @@ export class NextJS {
         sl.push(vals);
       }
       const v = new HttpStringList(sl);
-      ctx.Request.Headers.set(k, v);
+      ctx.Request.Headers.set(k.toLowerCase(), v);
     }
 
     return ctx;
@@ -69,7 +69,7 @@ export class NextJS {
       let vals = v.Value;
       if (vals !== undefined) {
         for(let v of vals.values()) {
-          headers.set(k, v);
+          headers.set(k.toLowerCase(), v);
         }
       }
     })
@@ -84,7 +84,7 @@ export class NextJS {
 export function WithScale(nextConfig: NextConfig = {}) {
   const extension = /\.scale/
   const loader = {
-    loader:'@loopholelabs/scale/webpack',
+    loader:'@loopholelabs/scalefile/webpack',
   }
   return Object.assign({}, nextConfig, {
     webpack(config: any, options: any) {
