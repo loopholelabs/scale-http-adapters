@@ -7,6 +7,19 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [v0.3.7] - 2023-03-12
+
+### Features
+
+- Fixing a bug in the adapters where the header cases would not be properly normalized to lower case
+
+### Dependencies
+
+- Bumping `scale` version to `v0.3.14`
+- Bumping `scale-signature` version to `v0.2.11`
+- Bumping `scale-signature-http` version to `v0.3.7`
+- Bumping `scalefile` version to `v0.1.9`
+
 ## [v0.3.6] - 2023-02-28
 
 ### Features
@@ -80,7 +93,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial release of the Scale HTTP Adapters library.
 
-[unreleased]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.3.6...HEAD
+[unreleased]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.3.7...HEAD
+[v0.3.7]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.3.7
 [v0.3.6]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.3.6
 [v0.3.5]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.3.5
 [v0.3.4]: https://github.com/loopholelabs/scale-http-adapters/compare/v0.3.4

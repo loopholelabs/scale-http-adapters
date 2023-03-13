@@ -21,6 +21,7 @@ import (
 	signature "github.com/loopholelabs/scale-signature-http"
 	"io"
 	"net/http"
+	"strings"
 )
 
 const (
@@ -33,7 +34,7 @@ func FromRequest(ctx *signature.Context, req *http.Request) error {
 		ctx.Request.Headers = signature.NewHttpResponseHeadersMap(uint32(len(req.Header)))
 	}
 	for k, v := range req.Header {
-		ctx.Request.Headers[k] = &signature.HttpStringList{
+		ctx.Request.Headers[strings.ToLower(k)] = &signature.HttpStringList{
 			Value: v,
 		}
 	}
@@ -63,7 +64,7 @@ func ToRequest(ctx *signature.Context, req *http.Request) {
 	req.RemoteAddr = ctx.Request.IP
 
 	for k, v := range ctx.Request.Headers {
-		req.Header[k] = v.Value
+		req.Header[strings.ToLower(k)] = v.Value
 	}
 
 	if ctx.Request.ContentLength != 0 {
