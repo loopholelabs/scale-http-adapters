@@ -25,6 +25,7 @@ func FromRequestContext(ctx *signature.Context, fastCTX *fasthttp.RequestCtx) {
 	ctx.Request.IP = fastCTX.RemoteAddr().String()
 	ctx.Request.ContentLength = int64(fastCTX.Request.Header.ContentLength())
 	ctx.Request.Body = fastCTX.Request.Body()
+	ctx.Request.URI = fastCTX.Request.URI().String()
 	if ctx.Request.ContentLength < 1 {
 		ctx.Request.ContentLength = int64(len(ctx.Request.Body))
 	}

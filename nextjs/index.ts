@@ -37,9 +37,10 @@ export class NextJS {
   static async fromRequest(ctx: Context, req: NextRequest): Promise<Context> {
     ctx.Request.Protocol = "HTTP/1.1"
     ctx.Request.Method = req.method;
-    ctx.Request.IP = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || req.ip || "";
+    ctx.Request.IP = req.ip || "";
     ctx.Request.ContentLength = BigInt(req.headers.get("content-length") || 0);
-
+    ctx.Request.URI = req.url;
+    
     ctx.Request.Body = new Uint8Array(0);
     if (req.body!=null) {
       ctx.Request.Body = new Uint8Array(await (await req.blob()).arrayBuffer());

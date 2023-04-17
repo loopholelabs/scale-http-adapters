@@ -12,8 +12,8 @@ github.com/klauspost/compress v1.15.9 h1:wKRjX6JRtDdrE9qwa4b/Cip7ACOshUI4smpCQan
 github.com/klauspost/compress v1.15.9/go.mod h1:PhcZ0MbTNciWF3rruxRgKxI5NkcHHrHUDtV4Yw2GlzU=
 github.com/loopholelabs/polyglot-go v0.5.1 h1:21QVDELp+EodPUAL+Aw8GNXLyt2BFj9gYQsGvHIFlcc=
 github.com/loopholelabs/polyglot-go v0.5.1/go.mod h1:Z0QiNv4KRuWjQWpUerMhmkvRh6ks1pYmEH4SGpG0EHQ=
-github.com/loopholelabs/scale v0.3.15 h1:byRL601gWMIxyn4YK4oYlbcKgxBTutR0LF5B5yJI6bY=
-github.com/loopholelabs/scale v0.3.15/go.mod h1:Y26GQaRfNbzffcJS7N9rv/liH6NRYhX0IyiscdWdxvw=
+github.com/loopholelabs/scale v0.3.17 h1:slIt+LhrCQikFSIGWxATNHrBjDtnj7EojCK+WzHNuNA=
+github.com/loopholelabs/scale v0.3.17/go.mod h1:TXIiUBjvIK5+HFCwtGNzkPNBlDbNKHJPAIUBVbUGDas=
 github.com/loopholelabs/scale-signature v0.2.11 h1:Wnur2owfIsuOFDzJTiwRd8rCJRBOzWRYK29ORr6XVYo=
 github.com/loopholelabs/scale-signature v0.2.11/go.mod h1:5qakYb6WN1hbmubB/UuBT9XsMi9b1vEHSSlsyvBF4vQ=
 github.com/loopholelabs/scale-signature-http v0.3.8 h1:2McyHf/yngxBQZvQZ0NTDvAwL8HhMFa9NjnH7xQp1Co=
@@ -29,8 +29,8 @@ github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.1 h1:w7B6lhMri9wdJUVmEZPGGhZzrYTPvgJArz7wNPgYKsk=
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
-github.com/tetratelabs/wazero v1.0.0-rc.2 h1:OA3UUynnoqxrjCQ94mpAtdO4/oMxFQVNL2BXDMOc66Q=
-github.com/tetratelabs/wazero v1.0.0-rc.2/go.mod h1:wYx2gNRg8/WihJfSDxA1TIL8H+GkfLYm+bIfbblu9VQ=
+github.com/tetratelabs/wazero v1.0.1 h1:xyWBoGyMjYekG3mEQ/W7xm9E05S89kJ/at696d/9yuc=
+github.com/tetratelabs/wazero v1.0.1/go.mod h1:wYx2gNRg8/WihJfSDxA1TIL8H+GkfLYm+bIfbblu9VQ=
 github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
 github.com/valyala/fasthttp v1.44.0 h1:R+gLUhldIsfg1HokMuQjdQ5bh9nuXHPIfvkYUu9eR5Q=
