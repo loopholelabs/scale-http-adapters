@@ -42,6 +42,7 @@ func FromRequest(ctx *signature.Context, req *http.Request) error {
 	ctx.Request.ContentLength = req.ContentLength
 	ctx.Request.Protocol = req.Proto
 	ctx.Request.IP = req.RemoteAddr
+	ctx.Request.URI = req.URL.String()
 
 	if req.ContentLength != 0 {
 		var err error
